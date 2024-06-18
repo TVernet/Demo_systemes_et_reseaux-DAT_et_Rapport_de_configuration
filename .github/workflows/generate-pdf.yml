@@ -15,10 +15,10 @@ jobs:
       uses: actions/checkout@v2
 
     - name: Set up Asciidoctor
-      run: sudo apt-get install -y asciidoctor
+      run: sudo apt-get update && sudo apt-get install -y asciidoctor
 
     - name: Generate PDF
-      run: asciidoctor-pdf -o DAT_et_Rapport_technique_du_serveur_SP.pdf DAT_et_Rapport_technique_du_serveur_SP.adoc
+      run: asciidoctor-pdf -o document.pdf DAT_et_Rapport_technique_du_serveur_SP.adoc
 
     - name: Deploy to GitHub Pages
       uses: peaceiris/actions-gh-pages@v3
