@@ -16,7 +16,7 @@ Tiffany Vernet - V1.0 - dernière modification le {docdate}
 
 Le serveur SP et la présente documentation n'ont pas vocation à reproduire les différentes formes de serveurs ou documentation que l'on peut retrouver en entreprise et ne peuvent retranscrire les problématiques de sécurité propre à une activité professionnelle réelle.
 
-Ils sont conçus dans un parcours d'autoformation afin d'éprouver quelques grands principes de sécurisation des système d'information et d'en documenter les choix dans un but d'information et de maintenance.
+Ils sont conçus dans un parcours d'autoformation afin d'éprouver quelques grands principes de sécurisation des systèmes d'information et d'en documenter les choix dans un but d'information et de maintenance.
 
 De même, il faut considéré que le serveur SP est un laboratoire personnel et qu'à ce titre, il se doit d'être particulièrement scalable et ne prévoit pas de forme finalisée à ce jour. +
 
