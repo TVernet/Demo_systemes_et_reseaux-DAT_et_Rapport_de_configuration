@@ -1,4 +1,4 @@
-# Le projet et son état : 
+# Descriptif : 
 
 Dans le cadre d'une actuelle reconversion en cybersécurité, j'ai souhaité déployer et entretenir un serveur personnel, ici appelé `SP`, et qui se veut être une simulation de site web intranet.  
 
