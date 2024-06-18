@@ -235,7 +235,7 @@ La solution utilisé sur ce serveur est `Iptables`. Sa configuration complète e
 |====
 
 <<<
-### Inventaire des clés de chiffrement
+### Inventaire des secrets
 [cols='2e,1e,1e,1e,1e,1e']
 |===
 |*Service*
