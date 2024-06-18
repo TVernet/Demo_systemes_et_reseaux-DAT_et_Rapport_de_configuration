@@ -1,8 +1,8 @@
 # Le projet et son état : 
 
-Dans le cadre d'une actuelle reconversion en cybersécurité, j'ai souhaité déployer et entretenir un serveur personnel, ici appelé `SP`, pour lequel je détaille ici les choix d'architecture réalisés.  
+Dans le cadre d'une actuelle reconversion en cybersécurité, j'ai souhaité déployer et entretenir un serveur personnel, ici appelé `SP`, et qui se veut être une simulation de site web intranet.  
 
-La mise en ligne de cette documentation à deux objectifs ;  
+Le DAT (Document d'Architecture Technique) et le Rapport de configuration qui constituent la documentation de ce projet sont mis en ligne pour deux raisons ;  
 - Donner un exemple de configuration à toute personne souhaitant réaliser un projet similaire
 - Démontrer certaines compétences en système et réseaux dans l'espoir d'intégrer une équipe et une entreprise au plus tôt  
 
