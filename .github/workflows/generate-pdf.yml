@@ -23,6 +23,9 @@ jobs:
     - name: Generate PDF
       run: asciidoctor-pdf -o output/document.pdf DAT_et_Rapport_technique_du_serveur_SP.adoc
 
+    - name: List Files for Debugging
+      run: ls -R
+
     - name: Deploy to GitHub Pages
       uses: peaceiris/actions-gh-pages@v3
       with:
