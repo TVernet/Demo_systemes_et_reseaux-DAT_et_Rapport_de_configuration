@@ -16,10 +16,10 @@ Ils sont conçus dans un parcours d’autoformation afin d’éprouver quelques 
 ## Utilisation et référence : 
 L'ensemble des éléments énuméré dans ce document regroupant un Document d'Architecture Technique (DAT) et un Rapport de configuration peuvent librement être repris, copié ou adapté au besoin de toute personne souhaitant se créer un petit serveur privé sécurisé.  
 
-La partie DAT de ce document est initialement inspirée par le modèle de dossier d'architecture proposé par Bertrand Florat et contributeurs consultable à ce lien : https://github.com/bflorat/modele-da[dépôt GitHub modèle DA], section https://github.com/bflorat/modele-da/blob/master/vue-architecture-securite.adoc[vue architecture sécurité].  
+La partie DAT de ce document est initialement inspirée par le modèle de dossier d'architecture proposé par Bertrand Florat et contributeurs consultable à ce lien : [dépôt GitHub modèle DA](https://github.com/bflorat/modele-da), section [vue architecture sécurité](https://github.com/bflorat/modele-da/blob/master/vue-architecture-securite.adoc).  
 
 **Il a toutefois été considérablement modifié et simplifié.**  
 
 ## Export PDF  
 
-La documentation au format PDF est disponible [ici]().
+La documentation au format PDF est disponible [ici](https://tvernet.github.io/Demo_systemes_et_reseaux-DAT_et_Rapport_de_configuration/DAT_et_Rapport_technique_du_serveur_SP.pdf).
