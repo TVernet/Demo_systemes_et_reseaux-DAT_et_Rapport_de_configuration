@@ -22,4 +22,4 @@ La partie DAT de ce document est initialement inspirée par le modèle de dossie
 
 ## Export PDF  
 
-La documentation au format PDF est disponible [ici](https://tvernet.github.io/Demo_systemes_et_reseaux-DAT_et_Rapport_de_configuration/document.pdf).
+La documentation au format PDF est disponible [ici](https://tvernet.github.io/Demo_systemes_et_reseaux-DAT_et_Rapport_de_configuration/output/document.pdf).
