@@ -18,10 +18,10 @@ jobs:
       run: sudo apt-get install -y asciidoctor
 
     - name: Generate PDF
-      run: asciidoctor-pdf -o document.pdf https://github.com/TVernet/Demo_systemes_et_reseaux-DAT_et_Rapport_de_configuration/blob/main/DAT_et_Rapport_technique_du_serveur_SP.adoc
+      run: asciidoctor-pdf -o output/document.pdf DAT_et_Rapport_technique_du_serveur_SP.adoc
 
     - name: Deploy to GitHub Pages
       uses: peaceiris/actions-gh-pages@v3
       with:
         github_token: ${{ secrets.GITHUB_TOKEN }}
-        publish_dir: ./
+        publish_dir: ./output
