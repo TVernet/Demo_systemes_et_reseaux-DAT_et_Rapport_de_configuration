@@ -93,7 +93,7 @@ Choix technique discutables :
 
 Limites personnelles et coûts : 
 
-La solution étant avant tout un laboratoire personnel et restant peu expérimenté et seule en charge de sa sécurité, j'ai décidé de ne pas déployer de solutions d'authentification à multi facteur ou tout autre solutions impliquant que le serveur contienne de réelles données me concernant ; autour de ce projet, seul mon compte chez le fournisseur de serveur physique est donc rattaché à mon identité.
+La solution étant avant tout un laboratoire personnel et restant peu expérimenté et seule en charge de sa sécurité, j'ai décidé de ne pas déployer de solutions d'authentification à multi facteur ou tout autre solutions impliquant que le serveur contienne de réelles données me concernant ; autour de ce projet, seul mon compte chez le fournisseur de serveur physique et le présent compte GitHub sont donc rattachés à mon identité.
 
 La solution doit correspondre à un juste équilibre entre apprentissage et nécessaire investissement. Cet investissement se doit d'être limité et de fait des solutions plus viable, mais aussi plus coûteuse comme par exemple la mise en place de modem, routeur, etc. indépendant de mon modem personnel ont été rapidement écartées.   
 
