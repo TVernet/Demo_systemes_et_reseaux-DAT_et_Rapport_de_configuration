@@ -14,17 +14,23 @@ jobs:
     - name: Checkout repository
       uses: actions/checkout@v3
 
-    - name: Set up Asciidoctor
-      run: sudo apt-get update && sudo apt-get install -y asciidoctor
+    - name: Set up Asciidoctor and Asciidoctor PDF
+      run: |
+        sudo apt-get update
+        sudo apt-get install -y asciidoctor
+        sudo gem install asciidoctor-pdf
 
     - name: Verify Asciidoctor Installation
       run: asciidoctor --version
+
+    - name: Verify Asciidoctor PDF Installation
+      run: asciidoctor-pdf --version
 
     - name: Generate PDF
       run: asciidoctor-pdf -o output/document.pdf DAT_et_Rapport_technique_du_serveur_SP.adoc
 
     - name: List Files for Debugging
-      run: ls -R
+      run: ls -R output
 
     - name: Deploy to GitHub Pages
       uses: peaceiris/actions-gh-pages@v3
