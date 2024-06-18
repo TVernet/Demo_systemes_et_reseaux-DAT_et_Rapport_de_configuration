@@ -40,7 +40,7 @@ La solution ne prévoit pas à ce stade d'intégrer des applications de simulati
 
 #### Schéma d'architecture technique
 
-image::Architecture_technique_sp_v2.jpg[]
+image::Architecture_technique.jpg[]
 
 #### Étapes et notions 
 
