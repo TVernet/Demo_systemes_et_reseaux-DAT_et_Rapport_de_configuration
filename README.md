@@ -7,7 +7,7 @@ Le DAT (Document d'Architecture Technique) et le Rapport de configuration qui co
 - Avoir la chance de bénéficier de retours constructifs de la part de tout lecteur avertis qui visiterait cette page
 - Démontrer certaines compétences en système et réseaux dans l'espoir d'intégrer une équipe et une entreprise   
 
-**La seconde raison explique pourquoi le projet est mis en ligne malgré son état non finalisé.**    
+**La dernière raison explique pourquoi le projet est mis en ligne malgré son état non finalisé.**    
 La présente documentation sera donc très régulièrement mise à jour.
 
 Le serveur `SP` et la présente documentation n’ont pas vocation à reproduire les différentes formes de serveurs ou documentation que l’on peut retrouver en entreprise et ne peuvent retranscrire les problématiques de sécurité propre à une activité professionnelle réelle.  
