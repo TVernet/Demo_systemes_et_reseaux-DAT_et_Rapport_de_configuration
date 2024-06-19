@@ -2,9 +2,10 @@
 
 Dans le cadre d'une actuelle reconversion en cybersécurité, j'ai souhaité déployer et entretenir un serveur personnel, ici appelé `SP`, et qui se veut être une simulation de site web intranet.  
 
-Le DAT (Document d'Architecture Technique) et le Rapport de configuration qui constituent la documentation de ce projet sont mis en ligne pour deux raisons ;  
+Le DAT (Document d'Architecture Technique) et le Rapport de configuration qui constituent la documentation de ce projet sont mis en ligne pour trois raisons ;  
 - Donner un exemple de configuration à toute personne souhaitant réaliser un projet similaire
-- Démontrer certaines compétences en système et réseaux dans l'espoir d'intégrer une équipe et une entreprise au plus tôt  
+- Avoir la chance de bénéficier de retours constructifs de la part de tout lecteur avertis qui visiterait cette page
+- Démontrer certaines compétences en système et réseaux dans l'espoir d'intégrer une équipe et une entreprise   
 
 **La seconde raison explique pourquoi le projet est mis en ligne malgré son état non finalisé.**    
 La présente documentation sera donc très régulièrement mise à jour.
