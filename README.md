@@ -11,7 +11,7 @@ La présente documentation sera donc très régulièrement mise à jour.
 
 Le serveur `SP` et la présente documentation n’ont pas vocation à reproduire les différentes formes de serveurs ou documentation que l’on peut retrouver en entreprise et ne peuvent retranscrire les problématiques de sécurité propre à une activité professionnelle réelle.  
 
-Ils sont conçus dans un parcours d’autoformation afin d’éprouver quelques grands principes de sécurisation des systèmes d’information et d’en documenter les choix dans un but d’information et de maintenance.  
+Ils sont conçus dans un parcours d’autoformation afin d’éprouver quelques grands principes de sécurisation des systèmes d’information et à ce titre, tous vos retours sont les bienvenus !   
 
 ## Export PDF  
 
