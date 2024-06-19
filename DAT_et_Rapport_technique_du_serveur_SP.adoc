@@ -294,23 +294,23 @@ La solution utilisé sur ce serveur est `Iptables`. Sa configuration complète e
 |Limité à l'utilisateur `sp` / accès root désactivé
 
 |Poste utilisateur
-|Anywhere
+|10.8.0.0/24
 |Serveur distant 
 |79.137.36.127
 |HTTPS
 |443/tcp
-|Accès au site web via le navigateur client
-
-|Pare-feu serveur
-|79.137.36.127
-|Tunnel OpenVPN 
-|10.8.0.1
-|Iptables
-|80/443
-|Redirection du flux vers le tunnel OpenVPN
+|Accès au site web via le navigateur client 
 
 |Tunnel OpenVPN
+|10.8.0.0/24
+|Pare-feu Iptables 
 |10.8.0.1
+|HTTP/HTTPS
+|80/443
+|Redirection du flux du tunnel OpenVPN au Pare-feu serveur  
+
+|Pare-feu Iptables
+|10.8.0.0/24
 |Reverse-proxy Nginx 
 |127.0.0.1
 |HTTP/HTTPS
@@ -337,7 +337,24 @@ La solution utilisé sur ce serveur est `Iptables`. Sa configuration complète e
 <<<
 ## Rapport de configuration
 
-### Iptables
+### Table de routage et 
+
+Ajout d'une règle de routage pour HTTP/HTTPS en manipulant la liste des tables ; +
+
+[bash]
+----
+:~# echo "200 openvpn" | sudo tee -a /etc/iproute2/rt_tables
+----
+[bash]
+----
+:~# sudo ip rule add fwmark 1 table openvpn
+----
+[bash]
+----
+:~# sudo ip route add default via 10.8.0.1 dev tun0 table openvpn
+----
+
+#### Iptables
 
 Permissions = `~/etc/iptables` = `root` : `root`, `755` +
 Permissions = `~/etc/iptables/rules.v4` = `root` : `root`, `644` +
@@ -369,19 +386,11 @@ Nécessite `net.ipv4.ip_forward = 1` dans `/etc/sysctl.conf` pour le forwarding 
 -A INPUT -s 10.8.0.0/24 -p tcp --dport 80 -j ACCEPT
 -A INPUT -s 10.8.0.0/24 -p tcp --dport 443 -j ACCEPT
 
-# Allow OpenVPN traffic between ens3 and tun0
--A FORWARD -i ens3 -o tun0 -p udp --dport 8443 -j ACCEPT
--A FORWARD -i tun0 -o ens3 -p udp --sport 8443 -j ACCEPT
-
-# Enable traffic between ens3 (public IP) and tun0 (OpenVPN tunnel)
+# Forward traffic between ens3 and tun0 for HTTP and HTTPS only
 -A FORWARD -i ens3 -o tun0 -p tcp --dport 80 -j ACCEPT
 -A FORWARD -i ens3 -o tun0 -p tcp --dport 443 -j ACCEPT
 -A FORWARD -i tun0 -o ens3 -p tcp --sport 80 -j ACCEPT
 -A FORWARD -i tun0 -o ens3 -p tcp --sport 443 -j ACCEPT
-
-# provisoire pour diagnostique
--A FORWARD -i ens3 -o tun0 -j ACCEPT
--A FORWARD -i tun0 -o ens3 -j ACCEPT
 
 # Allow port 8080 on localhost
 -A INPUT -i lo -p tcp --dport 8080 -j ACCEPT
@@ -404,6 +413,19 @@ Nécessite `net.ipv4.ip_forward = 1` dans `/etc/sysctl.conf` pour le forwarding 
 
 COMMIT
 
+*mangle
+:PREROUTING ACCEPT [0:0]
+:INPUT ACCEPT [0:0]
+:FORWARD ACCEPT [0:0]
+:OUTPUT ACCEPT [0:0]
+:POSTROUTING ACCEPT [0:0]
+
+# Mark HTTP and HTTPS packets
+-A PREROUTING -p tcp -d 79.137.36.127 --dport 80 -j MARK --set-mark 1
+-A PREROUTING -p tcp -d 79.137.36.127 --dport 443 -j MARK --set-mark 1
+
+COMMIT
+
 *nat
 :PREROUTING ACCEPT [0:0]
 :INPUT ACCEPT [0:0]
@@ -411,17 +433,12 @@ COMMIT
 :POSTROUTING ACCEPT [0:0]
 
 # Redirect HTTP and HTTPS traffic to the VPN IP
-#-A PREROUTING -d 79.137.36.127/32 -p tcp --dport 80 -j DNAT --to-destination 10.8.0.1:80
-#-A PREROUTING -d 79.137.36.127/32 -p tcp --dport 443 -j DNAT --to-destination 10.8.0.1:443
+-A PREROUTING -d 79.137.36.127/32 -p tcp --dport 80 -j DNAT --to-destination 10.8.0.1:80
+-A PREROUTING -d 79.137.36.127/32 -p tcp --dport 443 -j DNAT --to-destination 10.8.0.1:443
 
 # Masquerade traffic from the VPN subnet
--A POSTROUTING -s 10.8.0.0/24 -o ens3 -j MASQUERADE
-#-A POSTROUTING -s 10.8.0.0/24 -d 10.8.0.1 -p tcp --dport 80 -j SNAT --to-source 79.137.36.127
-#-A POSTROUTING -s 10.8.0.0/24 -d 10.8.0.1 -p tcp --dport 443 -j SNAT --to-source 79.137.36.127
-
-# Log and drop packets that don't match the above rules
--A PREROUTING -j LOG --log-prefix "PREROUTING: " --log-level 4
--A POSTROUTING -j LOG --log-prefix "POSTROUTING: " --log-level 4
+-A POSTROUTING -s 10.8.0.0/24 -o ens3 -p tcp --dport 80 -j MASQUERADE
+-A POSTROUTING -s 10.8.0.0/24 -o ens3 -p tcp --dport 443 -j MASQUERADE
 
 COMMIT
 ----
