@@ -337,7 +337,7 @@ La solution utilisé sur ce serveur est `Iptables`. Sa configuration complète e
 <<<
 ## Rapport de configuration
 
-### Table de routage et 
+### Table de routage 
 
 Ajout d'une règle de routage pour HTTP/HTTPS en manipulant la liste des tables ; +
 
@@ -354,7 +354,7 @@ Ajout d'une règle de routage pour HTTP/HTTPS en manipulant la liste des tables 
 :~# sudo ip route add default via 10.8.0.1 dev tun0 table openvpn
 ----
 
-#### Iptables
+### Iptables
 
 Permissions = `~/etc/iptables` = `root` : `root`, `755` +
 Permissions = `~/etc/iptables/rules.v4` = `root` : `root`, `644` +
