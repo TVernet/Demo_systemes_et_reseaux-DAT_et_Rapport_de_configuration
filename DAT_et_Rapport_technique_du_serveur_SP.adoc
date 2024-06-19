@@ -354,6 +354,12 @@ Ajout d'une règle de routage pour HTTP/HTTPS en manipulant la liste des tables 
 :~# sudo ip route add default via 10.8.0.1 dev tun0 table openvpn
 ----
 
+Vérification ;
+[bash]
+----
+:~# ip route list table openvpn
+----
+
 ### Iptables
 
 Permissions = `~/etc/iptables` = `root` : `root`, `755` +
