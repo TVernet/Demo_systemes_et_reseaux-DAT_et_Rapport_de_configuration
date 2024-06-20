@@ -236,6 +236,9 @@ La solution utilisé sur ce serveur est `Iptables`. Sa configuration complète e
 
 <<<
 ### Inventaire des secrets
+
+WARNING:: !! ajouter les phrases de passe 
+
 [cols='2e,1e,1e,1e,1e,1e']
 |===
 |*Service*
@@ -358,6 +361,8 @@ Vérification ;
 [bash]
 ----
 :~# ip route list table openvpn
+:~# ip route show table all
+:~# ip rule show
 ----
 
 ### Iptables
@@ -443,8 +448,7 @@ COMMIT
 -A PREROUTING -d 79.137.36.127/32 -p tcp --dport 443 -j DNAT --to-destination 10.8.0.1:443
 
 # Masquerade traffic from the VPN subnet
--A POSTROUTING -s 10.8.0.0/24 -o ens3 -p tcp --dport 80 -j MASQUERADE
--A POSTROUTING -s 10.8.0.0/24 -o ens3 -p tcp --dport 443 -j MASQUERADE
+-A POSTROUTING -s 10.8.0.0/24 -o ens3 -j MASQUERADE
 
 COMMIT
 ----
@@ -653,7 +657,7 @@ server 10.8.0.0 255.255.255.0
 ifconfig-pool-persist /var/log/openvpn/ipp.txt
 ;server-bridge 10.8.0.4 255.255.255.0 10.8.0.50 10.8.0.100
 ;server-bridge
-;push "route 79.137.36.127 255.255.255.255" #perte de co ssh hors tunnel si activé
+push "route 79.137.36.127 255.255.255.255" 
 push "route 10.8.0.0 255.255.255.0"
 ;client-config-dir ccd
 ;route 192.168.40.128 255.255.255.248
@@ -1529,5 +1533,3 @@ Dans la longue liste des compétences que je souhaite développer ou acquérir �
 * [ ] Réalisation et documentation de tests d'intrusion
 * [ ] Implémentation des réglementations en vigueur (RGPD, NIS, ISO, etc.)
 * [ ] Implémentation de services intranet pour la gestion de données 
-
-
