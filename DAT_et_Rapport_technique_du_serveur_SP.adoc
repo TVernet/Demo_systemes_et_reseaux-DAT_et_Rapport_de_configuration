@@ -627,6 +627,7 @@ set_var EASYRSA_DIGEST "sha256"
 - **Configuration d'OpenVPN** 
 
 Mode routé +
+Avec un mécanisme de split tunneling +
 Port = 8443/UDP +
 
 .Serveur Linux = `~/sp/openvpn` : 
