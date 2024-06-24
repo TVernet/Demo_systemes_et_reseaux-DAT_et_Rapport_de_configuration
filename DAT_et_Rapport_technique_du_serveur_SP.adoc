@@ -20,7 +20,7 @@ Ils sont conçus dans un parcours d'autoformation afin d'éprouver quelques gran
 
 De même, il faut considéré que le serveur SP est un laboratoire personnel et qu'à ce titre, il se doit d'être particulièrement scalable et ne prévoit pas de forme finalisée à ce jour. +
 
-### Référence
+### Références
 
 La partie DAT de ce document est initialement inspirée par le modèle de dossier d'architecture proposé par Bertrand Florat et contributeurs consultable à ce lien : https://github.com/bflorat/modele-da[dépôt GitHub modèle DA], section https://github.com/bflorat/modele-da/blob/master/vue-architecture-securite.adoc[vue architecture sécurité]. 
 
@@ -89,7 +89,7 @@ Choix technique discutables :
 
 2. Le serveur étant stocké chez un fournisseur extérieur, il ne peut y avoir d'approche de type bout-en-bout sur la chaîne des risques.  
 
-3. M'apparaissant comme moins problématique, j'ai fais le choix de restreindre l'accès au serveur par un flux VPN. Il s'agit d'une pratique sécurisée, mais cela peut être contraignant pour un véritable déploiement en entreprise : limitation du flux, accompagnement des collaborateurs, incompatibilités matériels, etc. Bien que pour des raisons d'apprentissage il me semblait important d'en tester sa configuration et sa maintenance, si je souhaitais réellement donner un accès plus large à ce projet de simulation j'aurais certainement opté pour une approche plus nuancée se situant entre le modèle périmétrique et celui du Zero trust. 
+3. M'apparaissant comme moins problématique, j'ai fais le choix de restreindre l'accès au serveur par un flux VPN. Il s'agit d'une pratique plutôt sécurisée, bien que non sans risque, surtout avec une configuration de type split tunneling, mais cela peut également être contraignant pour un véritable déploiement en entreprise : limitation du flux, accompagnement des collaborateurs, incompatibilités matériels, etc. Bien que pour des raisons d'apprentissage il me semblait important d'en tester sa configuration et sa maintenance, si je souhaitais réellement donner un accès plus large à ce projet de simulation j'aurais certainement opté pour une approche plus nuancée se situant entre le modèle périmétrique et celui du Zero trust. 
 
 Limites personnelles et coûts : 
 
@@ -340,20 +340,16 @@ WARNING:: !! ajouter les phrases de passe
 <<<
 ## Rapport de configuration
 
-### Table de routage 
+### Netfilter
 
-Ajout d'une règle de routage pour HTTP/HTTPS en manipulant la liste des tables ; +
+#### Table de routage 
+
+Ajout d'une règle de routage pour HTTP/HTTPS ; +
 
 [bash]
 ----
 :~# echo "200 openvpn" | sudo tee -a /etc/iproute2/rt_tables
-----
-[bash]
-----
 :~# sudo ip rule add fwmark 1 table openvpn
-----
-[bash]
-----
 :~# sudo ip route add default via 10.8.0.1 dev tun0 table openvpn
 ----
 
@@ -365,7 +361,7 @@ Vérification ;
 :~# ip rule show
 ----
 
-### Iptables
+#### Iptables
 
 Permissions = `~/etc/iptables` = `root` : `root`, `755` +
 Permissions = `~/etc/iptables/rules.v4` = `root` : `root`, `644` +
