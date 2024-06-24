@@ -25,3 +25,13 @@ L'ensemble des éléments peuvent librement être repris, copié ou adapté au b
 La partie DAT de ce document est initialement inspirée par le modèle de dossier d'architecture proposé par Bertrand Florat et contributeurs consultable à ce lien : [dépôt GitHub modèle DA](https://github.com/bflorat/modele-da), section [vue architecture sécurité](https://github.com/bflorat/modele-da/blob/master/vue-architecture-securite.adoc).  
 
 **Il a toutefois été considérablement modifié et simplifié.**  
+
+## Prévision d'évolution 
+
+Dans la longue liste des compétences que je souhaite développer ou acquérir à court et moyen terme, je prévois pour l'instant de réaliser les actions suivantes pour la partie "serveur" : 
+
+* [ ] Renseignement pour pour migration de chiffrement hybride ou postquantique 
+* [ ] Déploiement et entretien d'un Honeypot 
+* [ ] Réalisation et documentation de tests d'intrusion
+* [ ] Implémentation des réglementations en vigueur (RGPD, NIS, ISO, etc.)
+* [ ] Implémentation de services intranet pour la gestion de données 
