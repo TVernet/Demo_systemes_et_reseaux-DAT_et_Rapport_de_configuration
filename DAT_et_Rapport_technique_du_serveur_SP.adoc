@@ -131,9 +131,11 @@ Chaque serveur VPS OVH est livré avec une adresse IPv4 et une IPv6 et OVH préc
 
 #### Solutions déployées
 
-Un durcissement des règles `sysctl` est détaillé dans la partie "Rapport de Configuration", section "3.1" ; +
+Un durcissement des règles `sysctl` est détaillé dans la partie "Rapport de Configuration", section "3.1". Elle comprend l'activation des Privacy Extensions IPv6, le blocage du Forwarding entre les protocoles IPv4 et IPv6 et une protection contre les SYN flood ; +
 
-La solution de pare-feu retenue est `Iptables`. Sa configuration complète est détaillée dans la partie "Rapport de Configuration", section "3.2", mais voici un résumé des mesures prises. Ici un résumé des filtrages appliqués par protocole ; +
+Pour la configuration Netfilter, La solution de filtrage retenue est l'outil `Iptables`. Sa configuration complète est détaillée dans la partie "Rapport de Configuration", section "3.2". +
+
+Le résumé des mesures prises pour le filtrage IPv4 et IPv6 ; +
 
 .Filtrage IPv4
 [cols='2e,1e,1e,1e,1e,1e']
