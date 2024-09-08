@@ -114,7 +114,6 @@ Boot ID: `038d98ed51294de5a2c0fc04f8cd7bca` +
 Zone : `Region OpenStack: os-sbg8` +
 Localisation : `Strasbourg (SBG)` +
 IPv4 : `79.137.36.127/32` +
-IPv6 : `2001:41d0:401:3000::4c29` +
 
 OS : `Ubuntu Server 22.04 (Jammy Jellyfish) LTS` +
 Kernel: `Linux 5.15.0-101-generic` +
