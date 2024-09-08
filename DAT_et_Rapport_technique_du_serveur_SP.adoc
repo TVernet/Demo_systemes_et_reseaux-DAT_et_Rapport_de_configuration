@@ -121,12 +121,21 @@ Kernel: `Linux 5.15.0-101-generic` +
 Architecture: `x86-64` +
 
 <<<
-### Pare-feu 
+### Pare-feu & Configuration réseau
 
-La gestion du pare-feu sur un VPS OVH comprend deux considérations distinctes ; les solutions OVH intégrées et les potentielles solutions personnelles intégrées. Une protection anti-DDoS est assuré par le fournisseur OVH avec les technologies `Arbor Networks` et `Tilera` et s'active automatiquement en cas de détection d'une telle attaque. Un pare-feu est aussi disponible et configurable dans l'environnement tableau de bords du compte OVH, mais n'est pas activé par défaut et ne le sera pas dans la configuration présentée. +
+#### Considération de l'environnement 
 
-La solution utilisé sur ce serveur est `Iptables`. Sa configuration complète est détaillée dans la partie "Rapport de Configuration", mais voici un résumé des mesures prises ;
+La gestion du pare-feu sur un VPS OVH comprend deux considérations distinctes ; les solutions OVH intégrées et les potentielles solutions personnelles intégrées. OVH utilise une solution anti-DDoS développée en interne appelée VAC, qui repose sur des technologies telles que celles d'Arbor Networks pour la détection et la mitigation des attaques. Cette solution est optimisée par des processeurs multi-cœurs Tilera. Le VAC inclut des fonctionnalités telles qu'un pare-feu périmétrique (Edge Firewall) pour bloquer les attaques au niveau du réseau, ainsi que des modules de protection additionnels souvent désignés comme Shield et Armor. Un pare-feu est aussi disponible et configurable dans l'environnement tableau de bords du compte OVH, mais n'est pas activé par défaut et ne le sera pas dans la configuration présentée. +
 
+Chaque serveur VPS OVH est livré avec une adresse IPv4 et une IPv6 et OVH précise bien qu'il n'intègre pas de configuration IPv6 par défaut contrairement à IPv4. Pourtant par défaut, beaucoup de distributions Linux modernes active l'IPv6 au niveau système. Le serveur pourrait donc théoriquement accepter des connexions via IPv6. De fait et pour des raisons d'expansion d'IPv6 et de stabilité du système, j'ai choisi de configurer IPv6 et non de le désactiver. +   
+
+#### Solutions déployées
+
+Un durcissement des règles `sysctl` est détaillé dans la partie "Rapport de Configuration", section "3.1" ; +
+
+La solution de pare-feu retenue est `Iptables`. Sa configuration complète est détaillée dans la partie "Rapport de Configuration", section "3.2", mais voici un résumé des mesures prises. Ici un résumé des filtrages appliqués par protocole ; +
+
+.Filtrage IPv4
 [cols='2e,1e,1e,1e,1e,1e']
 |====
 |*Port* 
@@ -141,56 +150,109 @@ La solution utilisé sur ce serveur est `Iptables`. Sa configuration complète e
 |X
 |
 |10.8.0.0/24
-|
+|Toute interface
 
 |443
 |HTTPS
 |X
 |
 |10.8.0.0/24
-|
+|Toute interface
 
 |8443/udp
 |OpenVPN
 |X
 |
 |Anywhere
-|
+|Toute interface
 
 |2222/tcp
 |OpenSSH
 |X
 |
 |Anywhere
-|
+|Toute interface
 
 |8080 on lo
 |Backend Node.js
 |X
 |
 |Anywhere
-|
+|Interface `lo`
 
 |8080/tcp
 |
 |
 |X
 |Anywhere
+|Interface `lo`
+
 |
+|ICMP
+|X
+|
+|Anywhere
+|Echo-request, echo-reply, etc.
 
 |Tous les autres ports
 |
 |
 |X
 |Anywhere
-|
+|INPUT
 
-|Transfert
+|Tous les autres ports
+|
+|X
+|
+|Anywhere
+|OUTPUT
+
+|10.0.0.0/8, 172.16.0.0/12, 192.168.0.0/16, 127.0.0.0/8, 224.0.0.0/4, 240.0.0.0/4, 0.0.0.0/8
+|Filtrage Bogon
+|
+|X
+|Anywhere
+|INPUT sur l'interface `ens3` + toute interface pour OUTPUT
+|====
+
+.Filtrage IPv6
+[cols='2e,1e,1e,1e,1e,1e']
+|====
+|*Port* 
+|*Service*
+|*Ouvert*
+|*Fermé*
+|*Depuis*
+|*Autres*
+
+|
+|ICMP
+|X
+|
+|Anywhere
+|128 (echo-request), 1 (destination unreachable), etc.
+
+|Tous les autres ports
 |
 |
+|X
+|Anywhere
+|INPUT
+
+|Tous les autres ports
 |
+|X
 |
-|79.137.36.127 vers 10.8.0.1
+|Anywhere
+|OUTPUT
+
+|fe80::/10, ff00::/8, fc00::7, ::1
+|Filtrage Bogon
+|
+|X
+|Anywhere
+|OUTPUT, toute interface
 |====
 
 <<<
@@ -236,8 +298,6 @@ La solution utilisé sur ce serveur est `Iptables`. Sa configuration complète e
 
 <<<
 ### Inventaire des secrets
-
-WARNING:: !! ajouter les phrases de passe 
 
 [cols='2e,1e,1e,1e,1e,1e']
 |===
@@ -338,7 +398,84 @@ WARNING:: !! ajouter les phrases de passe
 |====
 
 <<<
+
 ## Rapport de configuration
+
+### Configuration sysctl 
+
+#### Activation des Privacy Extensions pour IPv6 
+
+WARNING:: Par défaut, le fichier `10-ipv6-privacy.conf` prend '2' en paramètre, mais `99-cloudimg-ipv6.conf` qui est intreprété après et donc écrase le paramétrage du fichier précédent, prend '0' = pas d'activation des Privacy Extensions. Pour mémoire et puisqu'il n'y a pas de risque de conflit en l'état actuel de la configuration, les deux fichiers restent avec la même valeur de paramètre.
+
+Permissions = `~/etc/sysctl.d/*` = `root` : `root`, `644` +
+
+./etc/sysctl.d/10-ipv6-privacy.conf
+[bash]
+----
+net.ipv6.conf.all.use_tempaddr = 2
+net.ipv6.conf.default.use_tempaddr = 2
+----
+
+./etc/sysctl.d/99-cloudimg-ipv6.conf
+[bash]
+----
+net.ipv6.conf.all.use_tempaddr = 2
+net.ipv6.conf.default.use_tempaddr = 2
+----
+
+#### Empêcher le forwarding entre Ipv4 et Ipv6 
+
+La valeur du paramètre est actuellement sur '0', ce qui est la valeur souhaitée. Toutefois, n'ayant pas personnellement défini ce paramètre et ayant un doute sur une possible modification par un service tiers, je vais mettre en place une surveillance sur la modification du paramètre via l'outil `auditd`. +
+
+La probabilité d'erreur est assez faible puisque '0' est la valeur par défaut du forwarding en IPv6, mais cela me permet d'en être sûr sans impacter la configuration réseau globale ; 
+
+[bash]
+----
+$ cat /proc/sys/net/ipv6/conf/all/forwarding
+0
+$ sudo sysctl -a | grep ipv6.conf.all.forwarding
+net.ipv6.conf.all.forwarding = 0
+$ sudo sysctl -a | grep ipv6.conf.default.forwarding
+net.ipv6.conf.default.forwarding = 0
+----
+
+.auditd 
+[bash]
+----
+## Pour mémoire : 
+# Mis en place d'une règle permanente dans /etc/audit/rules.d/my.rules ;
+-W /proc/sys/net/ipv6/conf/all/forwarding -k ipv6_forwarding
+# Suivi des événements ;
+sudo ausearch -k ipv6_forwarding
+# Désactiver la survaillance ;
+sudo auditctl -D -k ipv6_forwarding
+----
+
+#### Protection contre les attaques SYN flood (type DDoS)
+
+Permissions = `~/etc/sysctl.d/*` = `root` : `root`, `644` +
+
+./etc/sysctl.d/99-perso-syn-flood-.conf 
+[bash]
+----
+# Activer la protection contre les SYN flood
+net.ipv4.tcp_syncookies = 1
+
+# Réduire la fenêtre TCP pour limiter l'impact des attaques SYN flood
+net.ipv4.tcp_max_syn_backlog = 2048
+net.ipv4.tcp_synack_retries = 2
+----
+
+#### Protection contre le spoofing d'adresse IP
+
+Permissions = `~/etc/sysctl.d/*` = `root` : `root`, `644` +
+
+./etc/sysctl.d/10-network-security.conf 
+[bash]
+----
+net.ipv4.conf.default.rp_filter=2
+net.ipv4.conf.all.rp_filter=2
+----
 
 ### Netfilter
 
@@ -365,7 +502,7 @@ Vérification ;
 
 Permissions = `~/etc/iptables` = `root` : `root`, `755` +
 Permissions = `~/etc/iptables/rules.v4` = `root` : `root`, `644` +
-Nécessite `net.ipv4.ip_forward = 1` dans `/etc/sysctl.conf` pour le forwarding +
+Nécessite par contre `net.ipv4.ip_forward = 1` dans `/etc/sysctl.conf` pour le forwarding entre interfaces +
 
 ./etc/iptables/rules.v4
 [yaml]
@@ -413,6 +550,27 @@ Nécessite `net.ipv4.ip_forward = 1` dans `/etc/sysctl.conf` pour le forwarding 
 -A INPUT -p icmp --icmp-type time-exceeded -j ACCEPT
 -A INPUT -p icmp -m limit --limit 1/second --limit-burst 10 -j ACCEPT
 
+## Bogon filtering
+# Block RFC1918 private addresses
+-A INPUT -i ens3 -s 10.0.0.0/8 -j DROP
+-A INPUT -i ens3 -s 172.16.0.0/12 -j DROP
+-A INPUT -i ens3 -s 192.168.0.0/16 -j DROP
+-A OUTPUT -d 10.0.0.0/8 -j DROP
+-A OUTPUT -d 172.16.0.0/12 -j DROP
+-A OUTPUT -d 192.168.0.0/16 -j DROP
+# Block loopback addresses
+-A INPUT -i ens3 -s 127.0.0.0/8 -j DROP
+-A OUTPUT -d 127.0.0.0/8 -j DROP
+# Block multicast addresses
+-A INPUT -i ens3 -s 224.0.0.0/4 -j DROP
+-A OUTPUT -d 224.0.0.0/4 -j DROP
+# Block reserved addresses
+-A INPUT -i ens3 -s 240.0.0.0/4 -j DROP
+-A OUTPUT -d 240.0.0.0/4 -j DROP
+# Block any source address of 0.0.0.0/8
+-A INPUT -i ens3 -s 0.0.0.0/8 -j DROP
+-A OUTPUT -d 0.0.0.0/8 -j DROP
+
 # Log and drop packets that don't match the above rules
 -A FORWARD -j LOG --log-prefix "FORWARD: " --log-level 4
 -A INPUT -j LOG --log-prefix "INPUT: " --log-level 4
@@ -445,6 +603,48 @@ COMMIT
 
 # Masquerade traffic from the VPN subnet
 -A POSTROUTING -s 10.8.0.0/24 -o ens3 -j MASQUERADE
+
+COMMIT
+----
+
+#### Ip6tables
+
+Permissions = `~/etc/iptables` = `root` : `root`, `755` +
+Permissions = `~/etc/iptables/rules.v6` = `root` : `root`, `644` +
+
+./etc/iptables/rules.v6
+[yaml]
+----
+#!/bin/bash
+
+*filter
+:INPUT DROP [0:0]
+:FORWARD DROP [0:0]
+:OUTPUT ACCEPT [1:48]
+
+# Accept related and established traffic
+-A INPUT -m state --state RELATED,ESTABLISHED -j ACCEPT
+
+# Limiting ipv6-icmp requests
+-A INPUT -p ipv6-icmp -m icmp6 --icmpv6-type 128 -j ACCEPT
+-A INPUT -p ipv6-icmp -m icmp6 --icmpv6-type 1 -j ACCEPT
+-A INPUT -p ipv6-icmp -m icmp6 --icmpv6-type 2 -j ACCEPT
+-A INPUT -p ipv6-icmp -m limit --limit 1/sec --limit-burst 10 -j ACCEPT
+
+## Bogon filtering
+# Block link-local addresses
+-A OUTPUT -d fe80::/10 -j DROP
+# Block multicast addresses
+-A OUTPUT -d ff00::/8 -j DROP
+# Block Unique Local Addresses (ULA)
+-A OUTPUT -d fc00::/7 -j DROP
+# Block loopback addresses
+-A OUTPUT -d ::1 -j DROP
+
+# Log and drop packets that don't match the above rules
+-A INPUT -j LOG --log-prefix "IP6TABLES INPUT: " --log-level 4
+-A INPUT -j LOG --log-prefix "IP6TABLES FORWARD: " --log-level 4
+-A INPUT -j LOG --log-prefix "IP6TABLES OUTPUT: " --log-level 4
 
 COMMIT
 ----
