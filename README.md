@@ -1,4 +1,4 @@
-## Export PDF  
+## Consultation PDF  
 
 La documentation au format PDF est disponible [ici](https://tvernet.github.io/Demo_systemes_et_reseaux-DAT_et_Rapport_de_configuration/document.pdf).
 
