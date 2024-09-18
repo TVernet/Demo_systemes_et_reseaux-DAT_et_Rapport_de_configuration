@@ -30,7 +30,7 @@ La partie DAT de ce document est initialement inspirée par le modèle de dossie
 
 Dans la longue liste des compétences que je souhaite développer ou acquérir à court et moyen terme, je prévois pour l'instant de réaliser les actions suivantes pour la partie "serveur" : 
 
-* [ ] Renseignement pour pour migration de chiffrement hybride ou postquantique 
+* [ ] Renseignement pour migration de chiffrement hybride ou postquantique 
 * [ ] Déploiement et entretien d'un Honeypot 
 * [ ] Réalisation et documentation de tests d'intrusion
 * [ ] Implémentation des réglementations en vigueur (RGPD, NIS, ISO, etc.)
